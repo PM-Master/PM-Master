@@ -1,0 +1,12 @@
+site_name: PM-Master
+nav:
+  - Introduction: index.md
+  - policy-machine-core: policy-machine-core.md
+  - Policy-Machine: policy-machine.md
+  - PMAdmin: pm-admin.md
+  - PM-Client: pm-client.md
+  - Contact Us: contact.md
+theme:
+  name: 'rtd-dropdown'
+extra_css:
+  - css/extra.css
