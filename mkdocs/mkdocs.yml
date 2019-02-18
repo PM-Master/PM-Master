@@ -1,0 +1,7 @@
+site_name: PM-Master
+nav:
+  - Introduction: index.md
+theme:
+  name: 'rtd-dropdown'
+extra_css:
+  - css/extra.css
