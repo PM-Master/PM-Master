@@ -163,7 +163,7 @@ Decider decider = new PReviewDecider(graph, null);
 
 
 // 19. Check that `u1` has read and write permissions on `o1`.
-HashSet<String> permissions = decider.listPermissions(user1ID, 0, objectID);
+Set<String> permissions = decider.listPermissions(user1ID, 0, objectID);
 assertTrue(permissions.contains("r"));
 assertTrue(permissions.contains("w"));
 
@@ -298,8 +298,8 @@ graph.assign(new Node(bobRecID, OA), new Node(pcID, PC));
 graph.assign(new Node(aliceRecID, OA), new Node(pcID, PC));
 
 // associations
-HashSet<String> rw = new HashSet<>(Arrays.asList("r", "w"));
-HashSet<String> r = new HashSet<>(Arrays.asList("r"));
+Set<String> rw = new HashSet<>(Arrays.asList("r", "w"));
+Set<String> r = new HashSet<>(Arrays.asList("r"));
 
 graph.associate(new Node(hrID, UA), new Node(salariesID, OA), rw);
 graph.associate(new Node(hrID, UA), new Node(ssnsID, OA), rw);
@@ -320,7 +320,7 @@ Decider decider = new PReviewDecider(graph, null);
 // target: 'bob ssn'
 // expected: [r, w]
 // actual: [r, w]
-HashSet<String> permissions = decider.listPermissions(bobID, 0, bobSSNID);
+Set<String> permissions = decider.listPermissions(bobID, 0, bobSSNID);
 assertTrue(permissions.contains("r"));
 assertTrue(permissions.contains("w"));
 
