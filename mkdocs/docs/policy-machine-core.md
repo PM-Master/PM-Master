@@ -35,9 +35,34 @@ That's it, now the policy-machine-core library will be available for use in your
 
 ## Examples
 
+### Serialization
+#### Graph
+Serialize a graph into a json string.
+```
+Graph graph = new MemGraph();
+---
+String json = GraphSerializer.toJson(graph);
+```
+Deserialize a json string to a graph.
+```
+Graph graph = GraphSerializer.fromJson(new MemGraph(), json);
+```
+#### Prohibitions
+Serialize a ProhibitionDAO into a json string.
+```
+ProhibitionsDAO dao = new MemProhibitionsDAO();
+---
+String json = ProhibitionsSerializer.toJson(dao);
+```
+Deserialize a json string to a ProhibitionsDAO.
+```   
+ProhibitionsDAO deDao = ProhibitionsSerializer.fromJson(new MemProhibitionsDAO(), json);
+```
+
+
 ### Bank Teller
 
-**Example configuration summary:**
+#### Graph configuration summary
 
 - Users: u1, u2
 - An object o1
@@ -51,12 +76,13 @@ That's it, now the policy-machine-core library will be available for use in your
         - o1 is assigned to the Branch 1 object attribute
         - the Branch 1 user attribute has read and write permissions on the Branch 1 object attribute
 
-**Access control state:**
+#### Access control state
 
 - u1 can read and write o1
 - u2 can read o1
 ---
 
+#### Code Wakthrough
 ```
 // 1. Create a new Graph instance.  For this example, we'll use the `MemGraph` which is an in memory implementation of the Graph interface.
 Graph graph = new MemGraph();
@@ -147,14 +173,16 @@ permissions = decider.listPermissions(user2ID, 0, objectID);
 assertTrue(permissions.contains("r"));
 ```
 
+#### Visualization
 Below is a visual representation of the graph created in the bank teller example.
 [![alt text](images/bankteller.png "bank teller example")](images/bankteller.png)
 
 
 ### Employee Record
 
-**Example configuration summary:**
+#### Example configuration summary
 
+- One policy class
 - Users: bob, alice, charlie
 - The objects are bob's and alice's name, salary, and ssn.
 - All users are assigned to the Staff user attribute
@@ -163,9 +191,9 @@ Below is a visual representation of the graph created in the bank teller example
 - HR has read and write permissions on Salaries and SSNs
 - Bob and Alice have the Grp1Mgr and Grp2Mgr attributes, respectively
 - Grp1Mgr and Grp2Mgr have read permissions on Grp1Salaries and Grp2Salaries, respectively
-- Bob and Alice have read and write permissions on their name and ssn, and read permissions on their salaries.   
+- Bob and Alice have read and write permissions on their name and ssn, and read permissions on their salaries. 
 
-**Access control state:**
+#### Access control state
 
 - Alice can read and write her name and SSN, and read her salary, and the salaries of those in Group 2.
 - Bob can read and write his name and SSN, and read his salary, and salaries of those in Group 1.
@@ -333,5 +361,7 @@ permissions = decider.listPermissions(charlieID, 0, aliceSalaryID);
 assertTrue(permissions.contains("r"));
 assertTrue(permissions.contains("w"));
 ```
+
+#### Visualization
 Below is a visual representation of the graph created in the employee record example.
 [![alt text](images/emprec.png "employee record example")](images/emprec.png)
