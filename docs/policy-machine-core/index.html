@@ -109,6 +109,61 @@
           
 
   <li class="toctree-l2">
+    <a href="#usage">
+      Usage
+      <span class="toctree-expand"></span>
+    </a>
+  </li>
+
+
+
+  <li class="toctree-l2">
+    <ul class="subnav-l2 toc-hidden">
+    
+      
+        <li class="toctree-l3">
+          <a class="toctree-l4" href="#creating-a-graph">Creating a Graph</a>
+        </li>
+    
+      
+        <li class="toctree-l3">
+          <a class="toctree-l4" href="#access-decisions">Access Decisions</a>
+        </li>
+    
+      
+          
+
+  <li class="toctree-l3">
+    <a href="#audit">
+      Audit
+      <span class="toctree-expand"></span>
+    </a>
+  </li>
+
+
+
+  <li class="toctree-l3">
+    <ul class="subnav-l3 toc-hidden">
+    
+      
+        <li class="toctree-l4">
+          <a class="toctree-l5" href="#explain">Explain</a>
+        </li>
+    
+    </ul>
+  </li>
+
+      
+    
+    </ul>
+  </li>
+
+      
+    
+      
+          
+
+  <li class="toctree-l2">
     <a href="#examples">
       Examples
       <span class="toctree-expand"></span>
@@ -326,6 +381,48 @@ First, add jitpack as a repository</p>
 </code></pre>
 
 <p>That's it, now the policy-machine-core library will be available for use in your project!</p>
+<h2 id="usage">Usage</h2>
+<h3 id="creating-a-graph">Creating a Graph</h3>
+<pre><code>Graph graph = new Graph();
+</code></pre>
+
+<p>This will create a new instance of the in memory implementation of the Graph interface. Now it can be populated with
+nodes, assignments, and associations.</p>
+<pre><code>graph.createNode(new Node(1234, &quot;newNode&quot;, NodeType.O, null));
+</code></pre>
+
+<p>This will add a node with the ID 1234, name "newNode", type object, and no properties to the graph.</p>
+<pre><code>graph.assign(new Node(1234, NodeType.O), new Node(4321, NodeType.OA));
+</code></pre>
+
+<p>Assuming a node with the ID 4321 and type OA have been created in the graph, this will assign the node with ID 1234 to the 
+node with ID 4321.</p>
+<pre><code>graph.associate(new Node(2222, NodeType.UA), new Node(4321, NodeType.OA), new HashSet&lt;&gt;(Arrays.asList(&quot;read&quot;, &quot;write&quot;)));
+</code></pre>
+
+<p>Assuming a user attribute node is created with the ID 2222, this will associate it with the object attribute that has the 
+ID 4321, and give the operations read and write.</p>
+<p><strong>Examples of creating graphs are provided <a href="#examples">below</a></strong></p>
+<h3 id="access-decisions">Access Decisions</h3>
+<p>To make an access decision, instantiate a <code>PReviewDecider</code> which implements the <code>Decider</code> interface. The interface provides
+several methods to query the current access state of the graph.</p>
+<pre><code>Decider decider = new PReviewDecider(graph);
+decider.listPermissions(userID, NO_PROCESS, targetID);
+</code></pre>
+
+<p>The <code>listPermissions</code> method returns the permissions a user has on a target node.</p>
+<h3 id="audit">Audit</h3>
+<h4 id="explain">Explain</h4>
+<p>Explain answers the question <em>Why does a user have access to a given target node?</em> To perform this, instantiate a new 
+<code>PReviewAuditor</code> and call the <code>explain</code> method.</p>
+<pre><code>Auditor auditor = new PReviewAuditor(graph);
+Map&lt;String, List&lt;Path&gt;&gt; explain = auditor.explain(1234, 4321);
+</code></pre>
+
+<p>The result of the explain method is a map of policy classes to the paths from the user to the target under each policy class.
+The <code>Path</code> object contains a list of <code>Edge</code> objects and represents a series of paths from the user to the target. An <code>Edge</code> has
+a source node, a target node, and a set of operations. If the operations is null, the edge represents an assignment in the
+path. If it is not null then the edge is an association (the bridge from the user path to the target path).</p>
 <h2 id="examples">Examples</h2>
 <h3 id="serialization">Serialization</h3>
 <h4 id="graph">Graph</h4>
